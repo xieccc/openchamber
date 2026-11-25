@@ -1,6 +1,7 @@
 import { DEFAULT_SESSION_GOAL_MAX_AUTO_TURNS } from '@/lib/sessionGoalTurnLimit';
 import { EMPTY_NOTIFICATION_TEMPLATES } from '../utils/notificationTemplates';
 import { DEFAULT_MONO_FONT, DEFAULT_UI_FONT, DEFAULT_UI_FONT_WEIGHT } from '@/lib/fontOptions';
+import { DEFAULT_ACTIVITY_VISIBLE_ROWS } from '@/lib/activityVisibility';
 import { getStoredMobileKeyboardMode } from '@/lib/mobileKeyboardMode';
 import { LIVE_BROWSER_TABS_DEFAULT } from '@/lib/browser/liveTabs';
 import { sanitizeWorkStatusSectionOrder } from '@/components/chat/work-status/sections';
@@ -98,6 +99,7 @@ export const createInitialUIState = (): Pick<UIStore,
   | 'collapsibleThinkingBlocks'
   | 'expandReasoningWhileStreaming'
   | 'activityRenderMode'
+  | 'activityVisibleRows'
   | 'showDeletionDialog'
   | 'autoDeleteEnabled'
   | 'autoSaveEnabled'
@@ -329,6 +331,7 @@ export const createInitialUIState = (): Pick<UIStore,
   collapsibleThinkingBlocks: true,
   expandReasoningWhileStreaming: false,
   activityRenderMode: 'summary',
+  activityVisibleRows: DEFAULT_ACTIVITY_VISIBLE_ROWS,
   showDeletionDialog: true,
   autoDeleteEnabled: false,
   autoSaveEnabled: true,

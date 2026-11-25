@@ -4,8 +4,6 @@ import type { Part, ToolPart } from '@/lib/opencode/model';
 import { filterVisibleParts, isEmptyTextPart } from '../../message/partUtils';
 
 
-export const LIVE_ACTIVITY_VISIBLE_ROWS = 7;
-
 const isToolRunning = (status: string | undefined): boolean => (
     status === 'pending' || status === 'running' || status === 'started'
 );

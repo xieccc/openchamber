@@ -71,6 +71,16 @@ const isPersistableSettingsKey = (key: string) => {
   return true;
 };
 
+const DEFAULT_ACTIVITY_VISIBLE_ROWS = 7;
+const MIN_ACTIVITY_VISIBLE_ROWS = 1;
+const MAX_ACTIVITY_VISIBLE_ROWS = 50;
+const isActivityVisibleRows = (value: unknown): value is number => (
+  typeof value === 'number'
+  && Number.isInteger(value)
+  && value >= MIN_ACTIVITY_VISIBLE_ROWS
+  && value <= MAX_ACTIVITY_VISIBLE_ROWS
+);
+
 const SECRET_SETTINGS_KEYS = Object.freeze(
   Object.entries(settingsRegistry.fields)
     .filter(([, field]) => field.secret === true)
@@ -177,7 +187,7 @@ type ClearableStringSettingsKey =
   | 'fallbackModel' | 'fallbackVariant' | 'defaultGitIdentityId' | 'zenModel' | 'chatsDefaultModel' | 'chatsDefaultVariant' | 'chatsDefaultAgent';
 
 type NumberSettingsKey =
-  | 'inputHistoryLimit' | 'sidebarSessionBatchSize' | 'liveBrowserTabLimit' | 'sessionGoalMaxAutoTurns'
+  | 'inputHistoryLimit' | 'activityVisibleRows' | 'sidebarSessionBatchSize' | 'liveBrowserTabLimit' | 'sessionGoalMaxAutoTurns'
   | 'sessionGoalDefaultBudget' | 'sessionCostWarnThreshold' | 'sessionCostCriticalThreshold' | 'summaryThreshold' | 'summaryLength' | 'maxLastMessageLength' | 'autoDeleteAfterDays'
   | 'tunnelSessionTtlMs' | 'tunnelHttpsPort' | 'fontSize' | 'chatFontSize' | 'terminalFontSize' | 'editorFontSize'
   | 'padding' | 'cornerRadius' | 'inputBarOffset';
@@ -428,6 +438,9 @@ export const createSettingsHelpers = (dependencies: SettingsHelpersDependencies)
     }
     if (isInputHistoryLimit(candidate.inputHistoryLimit)) {
       result.inputHistoryLimit = candidate.inputHistoryLimit;
+    }
+    if (isActivityVisibleRows(candidate.activityVisibleRows)) {
+      result.activityVisibleRows = candidate.activityVisibleRows;
     }
     if (isSetMember(UI_LOCALE_VALUES, candidate.locale)) {
       result.locale = candidate.locale;
@@ -1373,6 +1386,7 @@ export const createSettingsHelpers = (dependencies: SettingsHelpersDependencies)
     const mobileKeyboardMode = normalizeMobileKeyboardMode(settings?.mobileKeyboardMode, 'native');
     const inputHistoryScope = sanitized.inputHistoryScope ?? DEFAULT_INPUT_HISTORY_SCOPE;
     const inputHistoryLimit = sanitized.inputHistoryLimit ?? DEFAULT_INPUT_HISTORY_LIMIT;
+    const activityVisibleRows = sanitized.activityVisibleRows ?? DEFAULT_ACTIVITY_VISIBLE_ROWS;
 
     const appNameFields: AppNameFields = {};
     if (pwaAppName) appNameFields.pwaAppName = pwaAppName;
@@ -1399,6 +1413,7 @@ export const createSettingsHelpers = (dependencies: SettingsHelpersDependencies)
       mobileKeyboardMode,
       inputHistoryScope,
       inputHistoryLimit,
+      activityVisibleRows,
       messageSearchEnabled: isMessageSearchEnabled(sanitized),
       securityScopedBookmarks: bookmarks,
       pinnedDirectories: normalizeStringArray(settings.pinnedDirectories),

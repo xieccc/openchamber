@@ -20,6 +20,7 @@ import {
 } from '@/components/sections/shared/SettingsSection';
 import { JevAccessNote } from '@/components/sections/classification/JevAccessNote';
 import { isVSCodeRuntime } from '@/lib/desktop';
+import { isActivityVisibleRows, MAX_ACTIVITY_VISIBLE_ROWS, MIN_ACTIVITY_VISIBLE_ROWS } from '@/lib/activityVisibility';
 import { useDeviceInfo } from '@/lib/device';
 import { useI18n, type I18nKey } from '@/lib/i18n';
 import {
@@ -132,6 +133,8 @@ const MessagesTab: React.FC = () => {
   const isVSCode = isVSCodeRuntime();
   const activityRenderMode = useUIStore((state) => state.activityRenderMode);
   const setActivityRenderMode = useUIStore((state) => state.setActivityRenderMode);
+  const activityVisibleRows = useUIStore((state) => state.activityVisibleRows);
+  const setActivityVisibleRows = useUIStore((state) => state.setActivityVisibleRows);
   const showReasoningTraces = useUIStore((state) => state.showReasoningTraces);
   const setShowReasoningTraces = useUIStore((state) => state.setShowReasoningTraces);
   const collapsibleThinkingBlocks = useUIStore((state) => state.collapsibleThinkingBlocks);
@@ -177,6 +180,12 @@ const MessagesTab: React.FC = () => {
     void updateDesktopSettings({ activityRenderMode: mode, chatRenderMode: 'live' });
   };
 
+  const handleActivityVisibleRowsChange = (value: number) => {
+    if (!isActivityVisibleRows(value)) return;
+    setActivityVisibleRows(value);
+    void updateDesktopSettings({ activityVisibleRows: value });
+  };
+
   return (
     <>
       <SettingsSection title={t('settings.layout.chat.section.activity')} contentClassName="space-y-3">
@@ -188,6 +197,30 @@ const MessagesTab: React.FC = () => {
             aria-label={t('settings.openchamber.visual.section.activityDefaultAria')}
           />
         </SettingsFieldRow>
+        {activityRenderMode === 'collapsed' ? (
+          <SettingsFieldRow
+            label={t('settings.openchamber.visual.field.activityVisibleRows')}
+            description={t('settings.openchamber.visual.field.activityVisibleRowsDescription')}
+            settingsItem="chat.activity-visible-rows"
+            className={NESTED_OPTION_CLASS}
+          >
+            <div className={SETTINGS_NUMBER_STEPPER_ROW_CLASS}>
+              <NumberInput
+                value={activityVisibleRows}
+                onValueChange={handleActivityVisibleRowsChange}
+                min={MIN_ACTIVITY_VISIBLE_ROWS}
+                max={MAX_ACTIVITY_VISIBLE_ROWS}
+                step={1}
+                className={SETTINGS_NUMBER_INPUT_CLASS}
+                deferExternalValueWhileFocused
+                aria-label={t('settings.openchamber.visual.field.activityVisibleRowsAria')}
+              />
+              <span className={SETTINGS_NUMBER_UNIT_CLASS}>
+                {t('settings.openchamber.visual.field.activityVisibleRowsUnit')}
+              </span>
+            </div>
+          </SettingsFieldRow>
+        ) : null}
         <div className={SETTINGS_OPTION_STACK_CLASS} data-settings-item="chat.reasoning">
           <SettingsCheckboxRow
             checked={showReasoningTraces}

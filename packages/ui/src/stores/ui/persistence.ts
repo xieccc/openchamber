@@ -313,6 +313,7 @@ const uiStorePersistOptions = {
     collapsibleThinkingBlocks: state.collapsibleThinkingBlocks,
     expandReasoningWhileStreaming: state.expandReasoningWhileStreaming,
     activityRenderMode: state.activityRenderMode,
+    activityVisibleRows: state.activityVisibleRows,
     showDeletionDialog: state.showDeletionDialog,
     autoDeleteEnabled: state.autoDeleteEnabled,
     autoSaveEnabled: state.autoSaveEnabled,

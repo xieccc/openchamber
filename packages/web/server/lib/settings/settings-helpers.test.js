@@ -447,6 +447,31 @@ describe('settings helpers', () => {
     expect(helpers.sanitizeSettingsUpdate({ inputHistoryLimit: Number.NEGATIVE_INFINITY })).toEqual({});
   });
 
+  it('accepts valid activityVisibleRows values', () => {
+    const helpers = createTestHelpers();
+
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 1 })).toEqual({
+      activityVisibleRows: 1,
+    });
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 7 })).toEqual({
+      activityVisibleRows: 7,
+    });
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 50 })).toEqual({
+      activityVisibleRows: 50,
+    });
+  });
+
+  it('rejects invalid activityVisibleRows values', () => {
+    const helpers = createTestHelpers();
+
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 0 })).toEqual({});
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 51 })).toEqual({});
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: 1.5 })).toEqual({});
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: '7' })).toEqual({});
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: Number.NaN })).toEqual({});
+    expect(helpers.sanitizeSettingsUpdate({ activityVisibleRows: Number.POSITIVE_INFINITY })).toEqual({});
+  });
+
   it('rejects invalid inputHistoryScope values', () => {
     const helpers = createTestHelpers();
 
@@ -1041,7 +1066,7 @@ describe('settings registry gate', () => {
     sidebarProjectDisplayMode: 'all', sidebarViewMode: 'timeline', sidebarListSessionGrouping: 'time', sidebarGrouping: 'time', sidebarKeepWorkInPlace: true, sidebarKeepPinnedInPlace: false, sidebarSessionBatchSize: 12, sidebarProjectSortOrder: 'manual',
     workStatusPanelEnabled: true, workStatusHiddenSections: ['mcp'], workStatusHiddenSectionsExplicit: true, workStatusSectionOrder: ['mcp', 'session'], workStatusSectionOrderExplicit: true,
     showReasoningTraces: true, streamingAutoFollowEnabled: true, collapsibleThinkingBlocks: true, expandReasoningWhileStreaming: true, showTextJustificationActivity: true,
-    chatRenderMode: 'live', activityRenderMode: 'summary', mermaidRenderingMode: 'svg', userMessageRenderingMode: 'markdown', collapsibleUserMessages: true,
+    chatRenderMode: 'live', activityRenderMode: 'summary', activityVisibleRows: 7, mermaidRenderingMode: 'svg', userMessageRenderingMode: 'markdown', collapsibleUserMessages: true,
     stickyUserHeader: true, promptNavigatorEnabled: true, chatWidth: 'wider', wideChatLayoutEnabled: true, showSplitAssistantMessageActions: true, showToolFileIcons: true,
     selectionApprovalText: 'Agreed.',
     codeBlockLineWrap: true, tableCellWrap: true, copyMessagesAsPlainText: true, showTurnChangedFiles: true, toolJsonViewMode: 'raw',

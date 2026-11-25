@@ -1,4 +1,5 @@
 import { isSessionGoalMaxAutoTurns } from '@/lib/sessionGoalTurnLimit';
+import { isActivityVisibleRows } from '@/lib/activityVisibility';
 import { clampLiveBrowserTabs } from '@/lib/browser/liveTabs';
 import { normalizeLargeTextPasteBehavior, normalizeFileEditorKeymap } from './preferences';
 import type { UIStoreSlice } from './types';
@@ -22,6 +23,7 @@ export const createPreferenceActions: UIStoreSlice<
   | 'setCollapsibleThinkingBlocks'
   | 'setExpandReasoningWhileStreaming'
   | 'setActivityRenderMode'
+  | 'setActivityVisibleRows'
   | 'setShowDeletionDialog'
   | 'setAutoDeleteEnabled'
   | 'setMergedWorktreeCleanupEnabled'
@@ -164,6 +166,11 @@ export const createPreferenceActions: UIStoreSlice<
 
   setActivityRenderMode: (value) => {
     set({ activityRenderMode: value });
+  },
+
+  setActivityVisibleRows: (value) => {
+    if (!isActivityVisibleRows(value)) return;
+    set({ activityVisibleRows: value });
   },
 
   setShowDeletionDialog: (value) => {

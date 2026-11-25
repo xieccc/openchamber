@@ -5,7 +5,6 @@ import { useI18n } from '@/lib/i18n';
 import { useUIStore } from '@/stores/useUIStore';
 import {
     ActivityRowSkipContext,
-    LIVE_ACTIVITY_VISIBLE_ROWS,
     activityRowParts,
     planActivityTrim,
 } from '../lib/turns/activityRows';
@@ -21,6 +20,7 @@ import { dispatchRowExpand } from '../lib/scroll/timelineScrollIntent';
 import { renderedPage } from '@/lib/opencode/tools';
 import type { ShownPart } from '../lib/turns/liveActivity';
 import { DiffCount } from '@/components/ui/diff-count';
+import { DEFAULT_ACTIVITY_VISIBLE_ROWS, isActivityVisibleRows } from '@/lib/activityVisibility';
 
 const NO_MESSAGES: ChatMessageEntry[] = [];
 
@@ -39,6 +39,11 @@ export function TurnFold({ turn, hasLaterAssistant, expanded, finalMessageId, ke
     const { t } = useI18n();
     const { finalMessage, activityMessages, settled, isExpanded: autoExpanded, pages } = useTurnFold(turn, hasLaterAssistant, expanded, finalMessageId, keepText);
     const showReasoningTraces = useUIStore((state) => state.showReasoningTraces);
+    const activityRenderMode = useUIStore((state) => state.activityRenderMode);
+    const activityVisibleRows = useUIStore((state) => state.activityVisibleRows);
+    const activityRowLimit = activityRenderMode === 'collapsed' && isActivityVisibleRows(activityVisibleRows)
+        ? activityVisibleRows
+        : DEFAULT_ACTIVITY_VISIBLE_ROWS;
     const [interactionHolds, setInteractionHolds] = React.useState(0);
     const pagesShown = !finalMessage && pages.length > 0;
     const hold = React.useCallback(() => setInteractionHolds((count) => count + 1), []);
@@ -51,9 +56,9 @@ export function TurnFold({ turn, hasLaterAssistant, expanded, finalMessageId, ke
         const shownBelow = new Set(pages.map((part) => part.id));
         return planActivityTrim(
             activityMessages.map((message) => activityRowParts(message.parts, showReasoningTraces).filter((part) => !shownBelow.has(part.id)).length),
-            LIVE_ACTIVITY_VISIBLE_ROWS,
+            activityRowLimit,
         );
-    }, [activityMessages, expanded, pages, showReasoningTraces]);
+    }, [activityMessages, activityRenderMode, activityRowLimit, expanded, pages, showReasoningTraces]);
     const trimRef = React.useRef(liveTrim);
     if (!held) trimRef.current = liveTrim;
     const trim = held && !expanded ? trimRef.current : liveTrim;

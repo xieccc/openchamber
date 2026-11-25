@@ -198,6 +198,7 @@ export interface UIStore {
   collapsibleThinkingBlocks: boolean;
   expandReasoningWhileStreaming: boolean;
   activityRenderMode: ActivityRenderMode;
+  activityVisibleRows: number;
   showDeletionDialog: boolean;
   autoDeleteEnabled: boolean;
   autoSaveEnabled: boolean;
@@ -468,6 +469,7 @@ export interface UIStore {
   setCollapsibleThinkingBlocks: (value: boolean) => void;
   setExpandReasoningWhileStreaming: (value: boolean) => void;
   setActivityRenderMode: (value: ActivityRenderMode) => void;
+  setActivityVisibleRows: (value: number) => void;
   setShowDeletionDialog: (value: boolean) => void;
   setAutoDeleteEnabled: (value: boolean) => void;
   setMergedWorktreeCleanupEnabled: (value: boolean) => void;

@@ -7,6 +7,7 @@ import { UI_FONT_WEIGHT_OPTIONS, isMonoFontOption, isUiFontOption, type MonoFont
 import { LOCALES, type Locale } from '@/lib/i18n/runtime';
 import { useI18nStore } from '@/lib/i18n/store';
 import { isInputHistoryLimit, isInputHistoryScope, type InputHistoryScope } from '@/lib/inputHistoryScope';
+import { MAX_ACTIVITY_VISIBLE_ROWS, MIN_ACTIVITY_VISIBLE_ROWS } from '@/lib/activityVisibility';
 import { LIVE_BROWSER_TABS_MAX, LIVE_BROWSER_TABS_MIN } from '@/lib/browser/liveTabs';
 import { normalizeMobileKeyboardMode } from '@/lib/mobileKeyboardMode';
 import { isTerminalShell } from '@/lib/terminalShell';
@@ -414,6 +415,7 @@ export const SETTINGS_REGISTRY = {
   showTextJustificationActivity: field({ scope: 'profile', parse: parseBoolean }),
   chatRenderMode: field({ scope: 'profile', parse: parseOneOf(['sorted', 'live']) }),
   activityRenderMode: field({ scope: 'profile', parse: parseActivityRenderMode, ui: uiStore('activityRenderMode', (v) => useUIStore.getState().setActivityRenderMode(v)) }),
+  activityVisibleRows: field({ scope: 'profile', parse: parseIntegerInRange(MIN_ACTIVITY_VISIBLE_ROWS, MAX_ACTIVITY_VISIBLE_ROWS), ui: uiStore('activityVisibleRows', (v) => useUIStore.getState().setActivityVisibleRows(v)) }),
   mermaidRenderingMode: field({ scope: 'profile', parse: parseOneOf(['svg', 'ascii']), ui: uiStore('mermaidRenderingMode', (v) => useUIStore.getState().setMermaidRenderingMode(v)) }),
   userMessageRenderingMode: field({ scope: 'profile', parse: parseOneOf(['markdown', 'plain']), ui: uiStore('userMessageRenderingMode', (v) => useUIStore.getState().setUserMessageRenderingMode(v)) }),
   collapsibleUserMessages: field({ scope: 'profile', parse: parseBoolean, ui: uiStore('collapsibleUserMessages', (v) => useUIStore.getState().setCollapsibleUserMessages(v)) }),

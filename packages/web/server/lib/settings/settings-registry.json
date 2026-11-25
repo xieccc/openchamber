@@ -457,6 +457,9 @@
     "activityRenderMode": {
       "scope": "profile"
     },
+    "activityVisibleRows": {
+      "scope": "profile"
+    },
     "mermaidRenderingMode": {
       "scope": "profile"
     },

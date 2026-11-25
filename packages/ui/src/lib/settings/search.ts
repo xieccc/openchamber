@@ -55,6 +55,13 @@ const SETTINGS_SEARCH_ITEMS: readonly SettingsSearchItem[] = [
     keywords: ['activity', 'collapsed', 'text', 'expanded', 'live', 'tools', 'history'],
   },
   {
+    id: 'chat.activity-visible-rows',
+    page: 'chat',
+    titleKey: 'settings.openchamber.visual.field.activityVisibleRows',
+    descriptionKey: 'settings.openchamber.visual.field.activityVisibleRowsDescription',
+    keywords: ['activity', 'rows', 'collapsed', 'visible', 'trim', 'more', 'history'],
+  },
+  {
     id: 'appearance.language',
     page: 'appearance',
     titleKey: 'settings.appearance.language.label',
